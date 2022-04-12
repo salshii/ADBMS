@@ -1,0 +1,224 @@
+student@student-OptiPlex-3050:~$ sudo mysql
+[sudo] password for student: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 32
+Server version: 10.0.38-MariaDB-0ubuntu0.16.04.1 Ubuntu 16.04
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| db                 |
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+4 rows in set (0.02 sec)
+
+MariaDB [(none)]> use db;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [db]> create table author(a_id int primary key,a_name varchar(20),city varchar(15),country varchar(20));
+Query OK, 0 rows affected (0.27 sec)
+
+MariaDB [db]> insert into author values(101,'Richard','LA','USA');
+Query OK, 1 row affected (0.44 sec)
+
+MariaDB [db]> insert into author values(102,'Anandh Ram','Kashmir','India');
+Query OK, 1 row affected (0.04 sec)
+
+MariaDB [db]> insert into author values(103,'Charlotte','Auckland','Nez Zealand');
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [db]> create  table publisher(p_id int primary key,p_name varchar(15),city varchar(15),country varchar(15));
+Query OK, 0 rows affected (0.24 sec)
+
+MariaDB [db]> create table category (cat_id int primary key,description varchar(20));
+Query OK, 0 rows affected (0.26 sec)
+
+MariaDB [db]> select * from author;
++------+------------+----------+-------------+
+| a_id | a_name     | city     | country     |
++------+------------+----------+-------------+
+|  101 | Richard    | LA       | USA         |
+|  102 | Anandh Ram | Kashmir  | India       |
+|  103 | Charlotte  | Auckland | Nez Zealand |
++------+------------+----------+-------------+
+3 rows in set (0.00 sec)
+
+MariaDB [db]> create table books(book_id int primary key,title varchar(20),a_id int references author,p_id int references publisher,cat_id int references category,year int,price int);
+Query OK, 0 rows affected (0.23 sec)
+
+MariaDB [db]> select * from books;
+Empty set (0.00 sec)
+
+MariaDB [db]> insert into publisher values(1,'Helen','venice','Italy');Query OK, 1 row affected (0.04 sec)
+
+MariaDB [db]> insert into publisher values(2,'Stephy','Paris','France');
+Query OK, 1 row affected (0.44 sec)
+
+MariaDB [db]> insert into publisher values(3,'Travis Scott','Zambia','Africa');
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [db]> insert into category values(1001,'Horror'); 
+Query OK, 1 row affected (0.05 sec)
+
+MariaDB [db]> insert into category values(1002,'Romance'); 
+Query OK, 1 row affected (0.02 sec)
+
+MariaDB [db]> insert into category values(1003,'Fiction'); 
+Query OK, 1 row affected (0.04 sec)
+
+MariaDB [db]> select *from  category;
++--------+-------------+
+| cat_id | description |
++--------+-------------+
+|   1001 | Horror      |
+|   1002 | Romance     |
+|   1003 | Fiction     |
++--------+-------------+
+3 rows in set (0.00 sec)
+
+MariaDB [db]> select *from publisher;
++------+--------------+--------+---------+
+| p_id | p_name       | city   | country |
++------+--------------+--------+---------+
+|    1 | Helen        | venice | Italy   |
+|    2 | Stephy       | Paris  | France  |
+|    3 | Travis Scott | Zambia | Africa  |
++------+--------------+--------+---------+
+3 rows in set (0.00 sec)
+
+MariaDB [db]> select *from books;
+Empty set (0.00 sec)
+
+MariaDB [db]> select *from publisher;
++------+--------------+--------+---------+
+| p_id | p_name       | city   | country |
++------+--------------+--------+---------+
+|    1 | Helen        | venice | Italy   |
+|    2 | Stephy       | Paris  | France  |
+|    3 | Travis Scott | Zambia | Africa  |
++------+--------------+--------+---------+
+3 rows in set (0.00 sec)
+
+MariaDB [db]> select *from  category;
++--------+-------------+
+| cat_id | description |
++--------+-------------+
+|   1001 | Horror      |
+|   1002 | Romance     |
+|   1003 | Fiction     |
++--------+-------------+
+3 rows in set (0.00 sec)
+
+MariaDB [db]> select *from  author;
++------+------------+----------+-------------+
+| a_id | a_name     | city     | country     |
++------+------------+----------+-------------+
+|  101 | Richard    | LA       | USA         |
+|  102 | Anandh Ram | Kashmir  | India       |
+|  103 | Charlotte  | Auckland | Nez Zealand |
++------+------------+----------+-------------+
+3 rows in set (0.00 sec)
+
+MariaDB [db]> insert into books values(001,'The Fault In Our Stars',101,1,1001,2000,560);
+Query OK, 1 row affected, 1 warning (0.04 sec)
+
+MariaDB [db]> insert into books values(002,'Half girlfriend',102,2,1002,2001,499);
+Query OK, 1 row affected (0.46 sec)
+
+MariaDB [db]> insert into books values(003,'Secret',103,3,1003,2008,320);
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [db]> select * from books;
++---------+----------------------+------+------+--------+------+-------+
+| book_id | title                | a_id | p_id | cat_id | year | price |
++---------+----------------------+------+------+--------+------+-------+
+|       1 | The Fault In Our Sta |  101 |    1 |   1001 | 2000 |   560 |
+|       2 | Half girlfriend      |  102 |    2 |   1002 | 2001 |   499 |
+|       3 | Secret               |  103 |    3 |   1003 | 2008 |   320 |
++---------+----------------------+------+------+--------+------+-------+
+3 rows in set (0.00 sec)
+
+MariaDB [db]>  select book_id,title,price from books;
++---------+----------------------+-------+
+| book_id | title                | price |
++---------+----------------------+-------+
+|       1 | The Fault In Our Sta |   560 |
+|       2 | Half girlfriend      |   499 |
+|       3 | Secret               |   320 |
++---------+----------------------+-------+
+3 rows in set (0.00 sec)
+
+MariaDB [db]> select  title from books where price>400;
++----------------------+
+| title                |
++----------------------+
+| The Fault In Our Sta |
+| Half girlfriend      |
++----------------------+
+2 rows in set (0.00 sec)
+
+MariaDB [db]> select title from books where cat_id in(select  cat_id from category where description!='Fiction');
++----------------------+
+| title                |
++----------------------+
+| The Fault In Our Sta |
+| Half girlfriend      |
++----------------------+
+2 rows in set (0.00 sec)
+
+MariaDB [db]> insert into books values(004,'Brotherhood',104,4,1004,2005,520);
+Query OK, 1 row affected (0.04 sec)
+
+MariaDB [db]> insert into books values(005,'Beloved',105,5,1005,1999,640);
+Query OK, 1 row affected (0.04 sec)
+
+MariaDB [db]> select * from books;
++---------+----------------------+------+------+--------+------+-------+
+| book_id | title                | a_id | p_id | cat_id | year | price |
++---------+----------------------+------+------+--------+------+-------+
+|       1 | The Fault In Our Sta |  101 |    1 |   1001 | 2000 |   560 |
+|       2 | Half girlfriend      |  102 |    2 |   1002 | 2001 |   499 |
+|       3 | Secret               |  103 |    3 |   1003 | 2008 |   320 |
+|       4 | Brotherhood          |  104 |    4 |   1004 | 2005 |   520 |
+|       5 | Beloved              |  105 |    5 |   1005 | 1999 |   640 |
++---------+----------------------+------+------+--------+------+-------+
+5 rows in set (0.00 sec)
+
+MariaDB [db]> select * from books where title like 'B%';
++---------+-------------+------+------+--------+------+-------+
+| book_id | title       | a_id | p_id | cat_id | year | price |
++---------+-------------+------+------+--------+------+-------+
+|       4 | Brotherhood |  104 |    4 |   1004 | 2005 |   520 |
+|       5 | Beloved     |  105 |    5 |   1005 | 1999 |   640 |
++---------+-------------+------+------+--------+------+-------+
+2 rows in set (0.00 sec)
+
+MariaDB [db]> select title,author.a_name,publisher.p_name from books left join author on author.a_id=books.a_id left join publisher on publisher.p_id=books.p_id where year in(2005,2008,2000);
++----------------------+-----------+--------------+
+| title                | a_name    | p_name       |
++----------------------+-----------+--------------+
+| The Fault In Our Sta | Richard   | Helen        |
+| Secret               | Charlotte | Travis Scott |
+| Brotherhood          | NULL      | NULL         |
++----------------------+-----------+--------------+
+3 rows in set (0.00 sec)
+
+MariaDB [db]> select *from books where price between 600 and 800;
++---------+---------+------+------+--------+------+-------+
+| book_id | title   | a_id | p_id | cat_id | year | price |
++---------+---------+------+------+--------+------+-------+
+|       5 | Beloved |  105 |    5 |   1005 | 1999 |   640 |
++---------+---------+------+------+--------+------+-------+
+1 row in set (0.00 sec)
+
+MariaDB [db]> 
+

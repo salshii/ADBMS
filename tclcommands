@@ -1,0 +1,166 @@
+student@student-OptiPlex-3050:~$ sudo mysql
+[sudo] password for student: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 36
+Server version: 10.0.38-MariaDB-0ubuntu0.16.04.1 Ubuntu 16.04
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| db                 |
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+4 rows in set (0.00 sec)
+
+MariaDB [(none)]> use db;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [db]> create table customer(c_id int,c_name varchar(15),salary int);
+Query OK, 0 rows affected (0.66 sec)
+
+MariaDB [db]> insert into customer values(123,'Ameen',25000);
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [db]> select * from customer;
++------+--------+--------+
+| c_id | c_name | salary |
++------+--------+--------+
+|  123 | Ameen  |  25000 |
++------+--------+--------+
+1 row in set (0.00 sec)
+
+MariaDB [db]> insert into customer values(124,'Arman',28000);
+Query OK, 1 row affected (0.04 sec)
+
+MariaDB [db]> insert into customer values(125,'arjun',22000);
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [db]> select * from customer;
++------+--------+--------+
+| c_id | c_name | salary |
++------+--------+--------+
+|  123 | Ameen  |  25000 |
+|  124 | Arman  |  28000 |
+|  125 | arjun  |  22000 |
++------+--------+--------+
+3 rows in set (0.00 sec)
+
+MariaDB [db]> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [db]> insert into customer values(126,'aravind',21000);
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [db]> commit;
+Query OK, 0 rows affected (0.04 sec)
+
+MariaDB [db]> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [db]> insert into customer values(127,'anandhu',20000);
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [db]> insert into customer values(128,'aakrii',2000);
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [db]> select * from customer;
++------+---------+--------+
+| c_id | c_name  | salary |
++------+---------+--------+
+|  123 | Ameen   |  25000 |
+|  124 | Arman   |  28000 |
+|  125 | arjun   |  22000 |
+|  126 | aravind |  21000 |
+|  127 | anandhu |  20000 |
+|  128 | aakrii  |   2000 |
++------+---------+--------+
+6 rows in set (0.00 sec)
+
+MariaDB [db]> delete from customer where c_id=127;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [db]> rollback;
+Query OK, 0 rows affected (0.44 sec)
+
+MariaDB [db]> delete from customer where c_id=126;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [db]> select * from customer;
++------+--------+--------+
+| c_id | c_name | salary |
++------+--------+--------+
+|  123 | Ameen  |  25000 |
+|  124 | Arman  |  28000 |
+|  125 | arjun  |  22000 |
++------+--------+--------+
+3 rows in set (0.00 sec)
+
+MariaDB [db]> rollback;
+Query OK, 0 rows affected (0.05 sec)
+
+MariaDB [db]> select * from customer;
++------+---------+--------+
+| c_id | c_name  | salary |
++------+---------+--------+
+|  123 | Ameen   |  25000 |
+|  124 | Arman   |  28000 |
+|  125 | arjun   |  22000 |
+|  126 | aravind |  21000 |
++------+---------+--------+
+4 rows in set (0.00 sec)
+
+MariaDB [db]> savepoint sp;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [db]> select * from customer;
++------+---------+--------+
+| c_id | c_name  | salary |
++------+---------+--------+
+|  123 | Ameen   |  25000 |
+|  124 | Arman   |  28000 |
+|  125 | arjun   |  22000 |
+|  126 | aravind |  21000 |
++------+---------+--------+
+4 rows in set (0.00 sec)
+
+MariaDB [db]> insert into customer values(127,'achu',18000);
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [db]> insert into customer values(128,'kichu',11000);
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [db]> savepoint sp1;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [db]> insert into customer values(129,'anu',7000);
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [db]> insert into customer values(130,'sanu',6000);
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [db]> rollback to sp;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [db]> select * from customer;
++------+---------+--------+
+| c_id | c_name  | salary |
++------+---------+--------+
+|  123 | Ameen   |  25000 |
+|  124 | Arman   |  28000 |
+|  125 | arjun   |  22000 |
+|  126 | aravind |  21000 |
++------+---------+--------+
+4 rows in set (0.00 sec)
+
+
+ 
+
